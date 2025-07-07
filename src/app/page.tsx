@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Progress } from "@/components/ui/progress"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Activity, BarChart3, Clock, Globe, Loader2, Search, TrendingUp, Zap, Eye, Timer, Gauge } from "lucide-react"
+import { analyze } from "@/web/services/analyze"
 
 type Metric = {
   value: number
@@ -31,19 +32,6 @@ type HistoryItem = {
   time: string
 }
 
-const mockResults: AnalysisResult = {
-  url: "https://example.com",
-  timestamp: "2024-01-15 14:30:25",
-  overallScore: 85,
-  metrics: {
-    fcp: { value: 1.2, score: 90, label: "First Contentful Paint" },
-    lcp: { value: 2.1, score: 85, label: "Largest Contentful Paint" },
-    tbt: { value: 150, score: 80, label: "Total Blocking Time" },
-    cls: { value: 0.05, score: 95, label: "Cumulative Layout Shift" },
-    fid: { value: 45, score: 88, label: "First Input Delay" },
-  },
-}
-
 const mockHistory: HistoryItem[] = [
   { id: 1, url: "https://example.com", score: 85, date: "2024-01-15", time: "14:30" },
   { id: 2, url: "https://google.com", score: 92, date: "2024-01-15", time: "13:15" },
@@ -57,7 +45,7 @@ export default function DevPerfTracker() {
   const [results, setResults] = useState<AnalysisResult | null>(null)
   const [error, setError] = useState<string>("")
 
-  const handleAnalyze = () => {
+  const handleAnalyze = async () => {
     if (!url) {
       setError("Veuillez entrer une URL valide")
       return
@@ -66,11 +54,16 @@ export default function DevPerfTracker() {
     setIsAnalyzing(true)
     setError("")
 
-    setTimeout(() => {
-      setResults(mockResults)
+    try {
+      const result = await analyze(url)
+      setResults(result)
+    } catch (err: any) {
+      setError(err.message)
+    } finally {
       setIsAnalyzing(false)
-    }, 3000)
+    }
   }
+
 
   const getScoreColor = (score: number) => {
     if (score >= 90) return "text-green-600"
