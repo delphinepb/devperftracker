@@ -31,7 +31,24 @@ L'application vise à sensibiliser les développeurs à l'importance de la perfo
 | **Déploiement**   | Vercel (prévu)                          | Déploiement rapide et scalable sans infrastructure lourde                    |
 
 ---
+## Design Patterns utilisés
 
+### 1. **Component-Based Architecture (Modèle Composant)**
+Chaque élément de l'interface est un composant React indépendant et réutilisable. Cela garantit une bonne maintenabilité et une meilleure évolutivité.
+
+### 2. **Container / Presentational Pattern**
+Le composant principal gère la logique (états, événements) tandis que les sous-composants s'occupent uniquement de l'affichage.
+
+### 3. **Command Pattern**
+Les actions utilisateur (comme le clic sur "Analyser") encapsulent une logique métier claire sans exposer les détails techniques.
+
+### 4. **Singleton (état centralisé)**
+Le stockage des résultats et de l'historique est centralisé dans un composant unique pour garantir la cohérence des données.
+
+### 5. **(Optionnel)** Strategy Pattern
+Ce pattern pourrait être utilisé plus tard si plusieurs stratégies d'audit (Lighthouse, PageSpeed, etc.) devaient être supportées.
+
+---
 ## Prochaines étapes
 
 1. Créer une **API Route** avec Puppeteer + Lighthouse pour obtenir des vraies données
@@ -44,7 +61,7 @@ L'application vise à sensibiliser les développeurs à l'importance de la perfo
 ## Lancer le projet en local
 
 ```bash
-git clone https://github.com/ton-user/devperftracker.git
+git clone https://github.com/delphinepb/devperftracker.git
 cd devperftracker
 npm install
 npm run dev
