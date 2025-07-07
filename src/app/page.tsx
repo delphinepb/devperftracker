@@ -97,6 +97,18 @@ export default function DevPerfTracker() {
     if (score >= 70) return "secondary"
     return "destructive"
   }
+  const totalSites = history.length
+
+  const averageScore = totalSites > 0
+    ? history.reduce((sum, item) => sum + item.score, 0) / totalSites
+    : 0
+
+  const bestScore = history.length > 0
+    ? Math.max(...history.map(item => item.score))
+    : 0
+
+  const today = new Date().toDateString()
+  const analysesToday = history.filter(item => new Date(item.date).toDateString() === today).length
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
@@ -186,7 +198,12 @@ export default function DevPerfTracker() {
                 </CardContent>
               </Card>
 
-              <QuickStats></QuickStats>
+              <QuickStats
+                totalSites={totalSites}
+                averageScore={averageScore}
+                bestScore={bestScore}
+                analysesToday={analysesToday}
+              />
             </div>
           </TabsContent>
 

@@ -22,14 +22,13 @@ L'application vise à sensibiliser les développeurs à l'importance de la perfo
 
 ## Stack Technique
 
-| Partie            | Choix                                  | Justification                                                                 |
-|-------------------|-----------------------------------------|-------------------------------------------------------------------------------|
-| **Frontend**      | Next.js (App Router)                    | Framework moderne avec rendu SSR/SSG optimisé                                 |
-| **UI**            | Tailwind CSS + shadcn/ui                | Rapidité de développement, composants réutilisables, responsive design        |
-| **Icônes**        | lucide-react                            | Icônes modernes et légères                                                   |
-| **Mock données**  | `useState` + données statiques          | Pour prototyper avant la connexion au backend réel                            |
-| **Déploiement**   | Vercel (prévu)                          | Déploiement rapide et scalable sans infrastructure lourde                    |
-
+| Catégorie            | Optimisation mise en place ou prévue                                     | Impact attendu                                            |
+|----------------------|-------------------------------------------------------------------------|-----------------------------------------------------------|
+| UI & Accessibilité | Utilisation de **shadcn/ui** et **Tailwind CSS** pour un rendu léger et responsive | Meilleure expérience utilisateur, accessibilité renforcée |
+| Performance        | Chargement des composants par onglet (Tabs)                             | Moins de rendu inutile, meilleure réactivité               |
+| Réutilisabilité    | Décomposition en composants réutilisables (`AnalyzeForm`, `AnalysisResult`, etc.) | Maintenance facilitée, scalabilité                        |
+| API & BDD         | API optimisée (une seule requête par action) + SQLite Prisma             | Rapidité d’accès aux données et légèreté                   |
+| Graphiques        | Utilisation de **Recharts** pour des visualisations claires et performantes | Analyse rapide et impact visuel fort                       |
 ---
 ## Design Patterns utilisés
 
@@ -45,16 +44,11 @@ Les actions utilisateur (comme le clic sur "Analyser") encapsulent une logique m
 ### 4. **Singleton (état centralisé)**
 Le stockage des résultats et de l'historique est centralisé dans un composant unique pour garantir la cohérence des données.
 
-### 5. **(Optionnel)** Strategy Pattern
-Ce pattern pourrait être utilisé plus tard si plusieurs stratégies d'audit (Lighthouse, PageSpeed, etc.) devaient être supportées.
-
 ---
-## Prochaines étapes
+## Visualisation des données
 
-1. Créer une **API Route** avec Puppeteer + Lighthouse pour obtenir des vraies données
-2. Stocker les résultats dans une base de données (MongoDB Atlas ou PlanetScale)
-3. Ajouter des visualisations graphiques avec Chart.js
-4. Déployer en ligne sur **Vercel** avec CI/CD
+- Graphique en barres (BarChart) : suivi de l’évolution des scores globaux au fil du temps
+- Graphique radar (RadarChart) : comparaison visuelle des scores des métriques d'une analyse
 
 ---
 
