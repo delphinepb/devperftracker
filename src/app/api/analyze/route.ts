@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { analyzeController } from './controller'
+import { getHistory } from '../analyze/controller'
 
 export async function POST(req: Request) {
   try {
@@ -9,4 +10,9 @@ export async function POST(req: Request) {
   } catch (error) {
     return NextResponse.json({ error: (error as Error).message }, { status: 400 })
   }
+}
+
+export async function GET() {
+  const history = await getHistory()
+  return NextResponse.json(history)
 }
