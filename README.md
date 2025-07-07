@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# DevPerfTracker
 
-## Getting Started
+Dashboard de Performance Web en Temps Réel
 
-First, run the development server:
+---
+
+## Objectif du projet
+
+DevPerfTracker est une application web permettant d'analyser les performances de n'importe quel site internet grâce à des métriques clés (First Contentful Paint, Largest Contentful Paint, Total Blocking Time, etc.).  
+L'application vise à sensibiliser les développeurs à l'importance de la performance web et leur fournir un outil simple pour suivre les scores en temps réel.
+
+---
+
+## Fonctionnalités (MVP)
+
+- Saisie d'une URL à analyser
+- Dashboard visuel avec score global et métriques détaillées
+- Historique des analyses simulées (mock pour l'instant)
+- UI moderne responsive avec **shadcn/ui** et **Tailwind CSS**
+
+---
+
+## Stack Technique
+
+| Partie            | Choix                                  | Justification                                                                 |
+|-------------------|-----------------------------------------|-------------------------------------------------------------------------------|
+| **Frontend**      | Next.js (App Router)                    | Framework moderne avec rendu SSR/SSG optimisé                                 |
+| **UI**            | Tailwind CSS + shadcn/ui                | Rapidité de développement, composants réutilisables, responsive design        |
+| **Icônes**        | lucide-react                            | Icônes modernes et légères                                                   |
+| **Mock données**  | `useState` + données statiques          | Pour prototyper avant la connexion au backend réel                            |
+| **Déploiement**   | Vercel (prévu)                          | Déploiement rapide et scalable sans infrastructure lourde                    |
+
+---
+
+## Prochaines étapes
+
+1. Créer une **API Route** avec Puppeteer + Lighthouse pour obtenir des vraies données
+2. Stocker les résultats dans une base de données (MongoDB Atlas ou PlanetScale)
+3. Ajouter des visualisations graphiques avec Chart.js
+4. Déployer en ligne sur **Vercel** avec CI/CD
+
+---
+
+## Lancer le projet en local
 
 ```bash
+git clone https://github.com/ton-user/devperftracker.git
+cd devperftracker
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
