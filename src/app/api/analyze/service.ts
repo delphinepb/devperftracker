@@ -1,23 +1,39 @@
-export const analyzeWebsite = async (url: string) => {
-  const apiKey = process.env.PAGESPEED_API_KEY
-  const apiUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}&key=${apiKey}`
+import { GOOGLE_API_KEY, GOOGLE_API_URL } from '@/config/config'
+import { AnalysisResult } from '@/types/analysis'
 
-  const res = await fetch(apiUrl)
-  const data = await res.json()
+export const analyzeWebsite = async (url: string): Promise<AnalysisResult> => {
+  const apiUrl = `${GOOGLE_API_URL}?url=${encodeURIComponent(url)}&key=${GOOGLE_API_KEY}`
 
-  const lighthouse = data.lighthouseResult?.categories.performance?.score
-  const audits = data.lighthouseResult?.audits
+  try {
+    const res = await fetch(apiUrl)
+    if (!res.ok) throw new Error(`Erreur API (${res.status}): ${res.statusText}`)
 
-  return {
-    url,
-    timestamp: new Date().toISOString(),
-    overallScore: lighthouse ? Math.round(lighthouse * 100) : 0,
-    metrics: {
-      fcp: { value: audits['first-contentful-paint']?.numericValue ?? 0, score: Math.round((audits['first-contentful-paint']?.score ?? 0) * 100), label: 'First Contentful Paint' },
-      lcp: { value: audits['largest-contentful-paint']?.numericValue ?? 0, score: Math.round((audits['largest-contentful-paint']?.score ?? 0) * 100), label: 'Largest Contentful Paint' },
-      tbt: { value: audits['total-blocking-time']?.numericValue ?? 0, score: Math.round((audits['total-blocking-time']?.score ?? 0) * 100), label: 'Total Blocking Time' },
-      cls: { value: audits['cumulative-layout-shift']?.numericValue ?? 0, score: Math.round((audits['cumulative-layout-shift']?.score ?? 0) * 100), label: 'Cumulative Layout Shift' },
-      fid: { value: audits['interactive']?.numericValue ?? 0, score: Math.round((audits['interactive']?.score ?? 0) * 100), label: 'First Input Delay' },
-    },
+    const data = await res.json()
+    const lighthouse = data.lighthouseResult?.categories.performance?.score
+    const audits = data.lighthouseResult?.audits
+
+    return {
+      url,
+      timestamp: new Date().toISOString(),
+      overallScore: lighthouse ? Math.round(lighthouse * 100) : 0,
+      metrics: mapMetrics(audits),
+    }
+  } catch (error) {
+    console.error('Erreur dans analyzeWebsite:', error)
+    throw new Error("Impossible d'analyser ce site pour le moment.")
   }
 }
+
+const mapMetrics = (audits: any) => ({
+  fcp: mapMetric(audits, 'first-contentful-paint', 'First Contentful Paint'),
+  lcp: mapMetric(audits, 'largest-contentful-paint', 'Largest Contentful Paint'),
+  tbt: mapMetric(audits, 'total-blocking-time', 'Total Blocking Time'),
+  cls: mapMetric(audits, 'cumulative-layout-shift', 'Cumulative Layout Shift'),
+  fid: mapMetric(audits, 'interactive', 'First Input Delay'),
+})
+
+const mapMetric = (audits: any, key: string, label: string) => ({
+  value: audits?.[key]?.numericValue ?? 0,
+  score: Math.round((audits?.[key]?.score ?? 0) * 100),
+  label,
+})

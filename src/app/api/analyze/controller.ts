@@ -1,28 +1,22 @@
-import { analyzeWebsite } from "./service"
-import { prisma } from "@/lib/prisma"
+import { analyzeWebsite } from './service'
+import { saveAnalysis, getAllAnalyses, getAnalysisById } from './repository'
 
-export const analyzeController = async (url: string) => {
-  if (!url || !url.startsWith("http")) {
-    throw new Error("URL invalide")
+export const handleAnalyze = async (url: string) => {
+  if (!url || !url.startsWith('http')) {
+    throw new Error('URL invalide')
   }
 
-  const result = await analyzeWebsite(url)
-
-  await prisma.analysis.create({
-  data: {
-    url: result.url,
-    score: result.overallScore,
-    metrics: result.metrics, 
-    date: new Date()
-  }
-})
-
-
-  return result
+  const analysis = await analyzeWebsite(url)
+  await saveAnalysis(analysis)
+  return analysis
 }
 
-export const getHistory = async () => {
-  return prisma.analysis.findMany({
-    orderBy: { date: 'desc' }
-  })
+export const handleGetHistory = async () => {
+  return await getAllAnalyses()
+}
+
+export const handleGetAnalysisById = async (id: number) => {
+  const analysis = await getAnalysisById(id)
+  if (!analysis) throw new Error('Analyse non trouvée')
+  return analysis
 }

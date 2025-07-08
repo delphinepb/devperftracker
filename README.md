@@ -20,35 +20,31 @@ L'application vise à sensibiliser les développeurs à l'importance de la perfo
 
 ---
 
-## Stack Technique
-
-| Catégorie            | Optimisation mise en place ou prévue                                     | Impact attendu                                            |
-|----------------------|-------------------------------------------------------------------------|-----------------------------------------------------------|
-| UI & Accessibilité | Utilisation de **shadcn/ui** et **Tailwind CSS** pour un rendu léger et responsive | Meilleure expérience utilisateur, accessibilité renforcée |
-| Performance        | Chargement des composants par onglet (Tabs)                             | Moins de rendu inutile, meilleure réactivité               |
-| Réutilisabilité    | Décomposition en composants réutilisables (`AnalyzeForm`, `AnalysisResult`, etc.) | Maintenance facilitée, scalabilité                        |
-| API & BDD         | API optimisée (une seule requête par action) + SQLite Prisma             | Rapidité d’accès aux données et légèreté                   |
-| Graphiques        | Utilisation de **Recharts** pour des visualisations claires et performantes | Analyse rapide et impact visuel fort                       |
----
-## Design Patterns utilisés
-
-### 1. **Component-Based Architecture (Modèle Composant)**
-Chaque élément de l'interface est un composant React indépendant et réutilisable. Cela garantit une bonne maintenabilité et une meilleure évolutivité.
-
-### 2. **Container / Presentational Pattern**
-Le composant principal gère la logique (états, événements) tandis que les sous-composants s'occupent uniquement de l'affichage.
-
-### 3. **Command Pattern**
-Les actions utilisateur (comme le clic sur "Analyser") encapsulent une logique métier claire sans exposer les détails techniques.
-
-### 4. **Singleton (état centralisé)**
-Le stockage des résultats et de l'historique est centralisé dans un composant unique pour garantir la cohérence des données.
-
----
 ## Visualisation des données
 
 - Graphique en barres (BarChart) : suivi de l’évolution des scores globaux au fil du temps
 - Graphique radar (RadarChart) : comparaison visuelle des scores des métriques d'une analyse
+
+---
+## Endpoints API
+
+| Méthode | Route               | Description                                 | Exemple d’appel |
+|---------|---------------------|---------------------------------------------|-----------------|
+| `POST`  | `/api/analyze`       | Lance l’analyse d’une URL et renvoie les métriques | `POST /api/analyze` avec `{ "url": "https://exemple.com" }` |
+| `GET`   | `/api/analyze/:id`   | Récupère les résultats détaillés d’une analyse | `GET /api/analyze/1` |
+
+## Exemple de données de réponse
+```json
+{
+  "url": "https://exemple.com",
+  "overallScore": 85,
+  "metrics": {
+    "fcp": { "value": 1234, "score": 78, "label": "First Contentful Paint" },
+    "lcp": { "value": 2345, "score": 82, "label": "Largest Contentful Paint" }
+  },
+  "timestamp": "2024-07-08T12:00:00Z"
+}
+```
 
 ---
 
