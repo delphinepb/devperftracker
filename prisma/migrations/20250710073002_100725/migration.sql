@@ -1,0 +1,8 @@
+-- CreateTable
+CREATE TABLE "Analysis" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "url" TEXT NOT NULL,
+    "score" INTEGER NOT NULL,
+    "date" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "metrics" JSONB
+);

@@ -2,7 +2,7 @@
 ## Schéma simple (MCD, UML ou table)
 
 ---
-## Liste des entités (ex: users, reservations, roles…)
+## Liste des entités 
 
 ---
 ## Champs, types, clés primaires / étrangères
