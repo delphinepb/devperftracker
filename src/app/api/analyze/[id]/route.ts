@@ -1,8 +1,8 @@
-import { NextResponse } from 'next/server'
+import { NextResponse, NextRequest } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import type { NextRequest } from 'next/server'
+import { withAuth } from '@/middleware/auth'
 
-export async function GET(req: NextRequest) {
+export const GET = withAuth(async (req: NextRequest, user) => {
   const id = req.nextUrl.pathname.split('/').pop()
 
   if (!id) {
@@ -17,5 +17,9 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'Analyse non trouvée' }, { status: 404 })
   }
 
+  if (analysis.userId !== user.userId) {
+    return NextResponse.json({ error: 'Accès interdit à cette analyse' }, { status: 403 })
+  }
+
   return NextResponse.json(analysis)
-}
+}, ['admin', 'user'])

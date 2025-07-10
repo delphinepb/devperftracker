@@ -4,17 +4,7 @@ L'application DevPerfTracker repose sur une architecture monolithique intégrée
 ---
 ## Schéma découpage 
 
-```less
-[Frontend - DevPerfTracker]
-        |
-        v
-[API Route - Next.js]
-        |
-        v
-[Controller] → [Service Layer] → [Repository Layer] → [BDD SQLite via Prisma]
-                                ↳ Appels API externes (Google PageSpeed Insights)
-
-```
+![alt text](image.png)
 ---
 ## Liste et rôles des Design Patterns utilisés
 | Pattern                                | Rôle                                                                                                 |

@@ -1,20 +1,25 @@
 import axios from 'axios'
 
 export const analyze = async (url: string) => {
-  try {
-    const response = await axios.post('/api/analyze', { url })
-    return response.data
-  } catch (error: any) {
-    throw new Error(error.response?.data?.error || "Erreur inconnue")
-  }
+  const token = localStorage.getItem('token')
+  const response = await axios.post('/api/analyze', { url }, {
+    headers: { Authorization: `Bearer ${token}` }
+  })
+  return response.data
 }
 
 export const fetchHistory = async () => {
-  const response = await axios.get('/api/history')
+  const token = localStorage.getItem('token')
+  const response = await axios.get('/api/analyze', {
+    headers: { Authorization: `Bearer ${token}` }
+  })
   return response.data
 }
 
 export const fetchAnalysisById = async (id: number) => {
-  const response = await axios.get(`/api/analyze/${id}`)
+  const token = localStorage.getItem('token')
+  const response = await axios.get(`/api/analyze/${id}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  })
   return response.data
 }

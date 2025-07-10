@@ -1,25 +1,19 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse, NextRequest } from 'next/server'
 import { handleAnalyze, handleGetHistory } from './controller'
+import { withAuth } from '@/middleware/auth'
 
-export async function POST(req: NextRequest) {
-  try {
-    const { url } = await req.json()
-    if (!url || typeof url !== 'string') {
-      return NextResponse.json({ error: 'URL manquante ou invalide.' }, { status: 400 })
-    }
+export const POST = withAuth(async (req: NextRequest, user) => {
+  const { url } = await req.json()
 
-    const result = await handleAnalyze(url)
-    return NextResponse.json(result)
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message || "Erreur inconnue" }, { status: 500 })
+  if (!url || typeof url !== 'string') {
+    return NextResponse.json({ error: 'URL manquante ou invalide.' }, { status: 400 })
   }
-}
 
-export async function GET() {
-  try {
-    const history = await handleGetHistory()
-    return NextResponse.json(history)
-  } catch (error: any) {
-    return NextResponse.json({ error: 'Impossible de récupérer l’historique.' }, { status: 500 })
-  }
-}
+  const result = await handleAnalyze(url, user.userId)
+  return NextResponse.json(result)
+}, ['admin', 'user'])
+
+export const GET = withAuth(async (req: NextRequest, user) => {
+  const history = await handleGetHistory(user.userId)
+  return NextResponse.json(history)
+}, ['admin', 'user'])

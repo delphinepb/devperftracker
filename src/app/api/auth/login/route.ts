@@ -33,3 +33,9 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json({ token })
 }
+
+
+export const logout = () => {
+  localStorage.removeItem('token')
+  window.location.href = '/login'
+  }

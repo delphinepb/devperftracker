@@ -1,10 +1,11 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { withAuth } from '@/middleware/auth'
 
-export async function GET() {
+export const GET = withAuth(async (req, user) => {
   const history = await prisma.analysis.findMany({
-    orderBy: { date: 'desc' }
+    where: { userId: user.userId }, 
+    orderBy: { date: 'desc' },
   })
-
   return NextResponse.json(history)
-}
+}, ['admin', 'user'])
