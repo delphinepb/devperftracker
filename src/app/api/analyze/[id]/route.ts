@@ -10,14 +10,14 @@ export const GET = withAuth(async (req: NextRequest, user) => {
   }
 
   const analysis = await prisma.analysis.findUnique({
-    where: { id: parseInt(id, 10) }
+    where: { id: parseInt(id, 10) },
   })
 
   if (!analysis) {
     return NextResponse.json({ error: 'Analyse non trouvée' }, { status: 404 })
   }
 
-  if (analysis.userId !== user.userId) {
+  if (user.role !== 'admin' && analysis.userId !== parseInt(user.userId, 10)) {
     return NextResponse.json({ error: 'Accès interdit à cette analyse' }, { status: 403 })
   }
 

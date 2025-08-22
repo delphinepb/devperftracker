@@ -17,3 +17,4 @@ export const GET = withAuth(async (req: NextRequest, user) => {
   const history = await handleGetHistory(user.userId)
   return NextResponse.json(history)
 }, ['admin', 'user'])
+

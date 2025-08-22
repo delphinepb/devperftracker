@@ -17,18 +17,24 @@ export default function LoginPage() {
   const handleLogin = async () => {
     setError("")
     try {
-      await login(username, password)
-      router.push("/") 
+        const { role } = await login(username, password)
+
+        if (role === 'admin') {
+        router.push("/admin/dashboard")
+        } else {
+        router.push("/dashboard")
+        }
     } catch (err: any) {
-      setError(err.message)
+        setError(err.message)
     }
-  }
+    }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
       <Card className="w-full max-w-sm shadow-xl">
         <CardHeader>
-          <CardTitle>Connexion</CardTitle>
+          <h1 className="text-center text-4xl font-bold text-gray-900 dark:text-white">DevPerfTracker</h1>
+          <CardTitle className="text-center">Connexion</CardTitle>
           <CardDescription>Connectez-vous pour accéder au Dashboard</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
